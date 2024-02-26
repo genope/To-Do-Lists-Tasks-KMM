@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import note.data.local.Task
+import todolist.kmm.domain.models.Status
 
 @Composable
 fun TaskItem(
@@ -41,7 +42,6 @@ fun TaskItem(
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                     ) {
-                       // ColorByStatus(status)
                         Text(
                             modifier = Modifier.padding(2.dp),
                             text = task.name_task,
@@ -68,29 +68,6 @@ fun TaskItem(
                         style = MaterialTheme.typography.body2,
                         color = Color.Gray
                     )
-                    Row(modifier = Modifier.fillMaxWidth()) {
-                        Column(horizontalAlignment = Alignment.Start) {
-                            Text(
-                                modifier = Modifier.padding(2.dp)
-                                    .padding(start = 20.dp),
-                                text = "assigned from :${task.assigned_from} ",
-                                style = MaterialTheme.typography.body2,
-                                color = Color.Black,
-                            )
-                        }
-                        Column(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalAlignment = Alignment.End
-                        ) {
-                            Text(
-                                modifier = Modifier.padding(2.dp),
-                                text = "assigned To :${task.assigned_to} ",
-                                style = MaterialTheme.typography.body2,
-                                color = Color.Black,
-                            )
-                        }
-
-                    }
                 }
 
             }

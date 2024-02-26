@@ -20,7 +20,7 @@ class RemoteDataImp(
         )
     override suspend fun getTaskFromApi(id: Int): Task =
         apiTaskMapper.map(
-            httpClient.get("$endPoint/Task/Tasks/$id").body<Item>()
+            httpClient.get("$endPoint/Task/ListerTasks/$id").body<Item>()
         )
 
 

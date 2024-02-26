@@ -11,11 +11,18 @@ data class TaskModel(
 
 @Serializable
 data class Item(
-    val name_task: String,
-    val description: String,
-    val assigned_from: String,
-    val assigned_to: String,
-    val complexity: Int,
-    val status: Int,
+    @SerialName("id")
     val id: Int,
+    @SerialName("name_task")
+    val name_task: String,
+    @SerialName("description")
+    val description: String,
+    @SerialName("complexity")
+    val complexity: Int,
+    @SerialName("assigned_to")
+    val assigned_to: String,
+    @SerialName("assigned_from")
+    val assigned_from: String,
+    @SerialName("status")
+    val status: Int,
 )

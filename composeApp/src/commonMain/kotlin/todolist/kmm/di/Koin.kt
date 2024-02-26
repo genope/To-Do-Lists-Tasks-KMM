@@ -19,6 +19,11 @@ import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
+import todolist.kmm.domain.interactors.GetTaskUseCase
+import todolist.kmm.domain.interactors.GetTasksFavoritesUseCase
+import todolist.kmm.domain.interactors.IsTaskFavoriteUseCase
+import todolist.kmm.domain.interactors.SwitchTaskFavoriteUseCase
+import todolist.kmm.presentation.ui.features.task_details.TaskDetailViewModel
 import todolist.kmm.presentation.ui.features.tasks.TasksViewModel
 import todolist.kmm.repository.ICacheData
 import todolist.kmm.repository.IRemoteData
@@ -40,9 +45,14 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
     }
 val viewModelModule = module {
     factory { TasksViewModel(get()) }
+    factory { params -> TaskDetailViewModel(get(),get(),get(),params.get()) }
 }
 val useCasesModule: Module = module {
     factory { GetTasksUseCase(get(), get()) }
+    factory { GetTaskUseCase(get(), get()) }
+    factory { GetTasksFavoritesUseCase(get(), get()) }
+    factory { IsTaskFavoriteUseCase(get(), get()) }
+    factory { SwitchTaskFavoriteUseCase(get(), get()) }
 }
 
 val repositoryModule = module {
