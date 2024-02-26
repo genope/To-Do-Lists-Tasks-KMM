@@ -1,0 +1,25 @@
+import todolist.kmm.domain.models.Status;
+import todolist.kmm.domain.models.Complexity;
+
+CREATE TABLE TaskFavorite(
+    id INTEGER NOT NULL PRIMARY KEY,
+    task_name TEXT NOT NULL,
+    description TEXT NOT NULL,
+    assigned_to TEXT NOT NULL,
+    assigned_from TEXT NOT NULL,
+    status TEXT AS Status NOT NULL,
+    complexity TEXT AS Complexity NOT NULL
+);
+
+insertTaskFavorite:
+INSERT INTO TaskFavorite(id, task_name, description, assigned_to, assigned_from, status, complexity) VALUES (?,?,?,?,?,?,?);
+
+removeTaskFavorite:
+DELETE FROM TaskFavorite WHERE id = ?;
+
+selectAllTaskFavorite:
+SELECT * FROM TaskFavorite;
+
+selectTaskFavoriteById:
+-- SELECT * FROM TaskFavorite WHERE id = ?;
+SELECT EXISTS(SELECT 1 FROM TaskFavorite WHERE id = ? LIMIT 1);
