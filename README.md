@@ -10,7 +10,21 @@
 * [Ktor]
 * [Koin]
 
-## Android, iOS, Desktop, Web
+## Android, iOS, Desktop
+
+
+## Architecture
+### Clean Architecture KMM
+
+<p align="center">    
+  <img src="./cleanArchitectureKMM.png">
+<p>
+
+### KMM Life Cycle
+
+<p align="center">    
+  <img src="./kmmLifeCycle.png">
+<p>
 
 ## Run project
 
