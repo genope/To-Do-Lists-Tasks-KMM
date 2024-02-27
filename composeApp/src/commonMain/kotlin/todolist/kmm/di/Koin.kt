@@ -25,6 +25,7 @@ import todolist.kmm.domain.interactors.IsTaskFavoriteUseCase
 import todolist.kmm.domain.interactors.SwitchTaskFavoriteUseCase
 import todolist.kmm.presentation.ui.features.task_details.TaskDetailViewModel
 import todolist.kmm.presentation.ui.features.tasks.TasksViewModel
+import todolist.kmm.presentation.ui.features.tasks_favorites.TasksFavoritesViewModel
 import todolist.kmm.repository.ICacheData
 import todolist.kmm.repository.IRemoteData
 import todolist.kmm.repository.RepositoryImp
@@ -45,6 +46,7 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
     }
 val viewModelModule = module {
     factory { TasksViewModel(get()) }
+    factory { TasksFavoritesViewModel(get()) }
     factory { params -> TaskDetailViewModel(get(),get(),get(),params.get()) }
 }
 val useCasesModule: Module = module {

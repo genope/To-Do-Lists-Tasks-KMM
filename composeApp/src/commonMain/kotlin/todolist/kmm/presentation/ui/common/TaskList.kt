@@ -11,14 +11,14 @@ import todolist.kmm.presentation.ui.common.TaskItem
 
 @Composable
 fun TasksList(
-    task: List<Task>,
+    tasks: List<Task>,
     onTaskClick: (Int) -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Top
     ) {
-        items(task) { task ->
+        items(tasks) { task ->
             TaskItem(
                 task = task,
                 onClick = { onTaskClick(task.id.toInt()) }

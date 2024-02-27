@@ -25,6 +25,7 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 import todolist.kmm.presentation.ui.common.ActionBarIcon
 import todolist.kmm.presentation.ui.common.state.ManagementResourceUiState
 import todolist.kmm.presentation.ui.features.task_details.TaskDetailsScreen
+import todolist.kmm.presentation.ui.features.tasks_favorites.TasksFavoritesScreen
 
 
 class TaskScreen : Screen {
@@ -41,9 +42,8 @@ class TaskScreen : Screen {
                 when (effect) {
                     is TasksContrant.Effect.NavigateToDetailTask ->
                         navigator.push(TaskDetailsScreen(effect.idTask))
-                        //TasksContrant.Effect.NavigateToFavorites ->
-                        //navigator.push(CharactersFavoritesScreen())
-                    else -> {}
+                        TasksContrant.Effect.NavigateToFavorites ->
+                        navigator.push(TasksFavoritesScreen())
                 }
             }
         }
@@ -60,7 +60,7 @@ class TaskScreen : Screen {
                 resourceUiState = state.tasks,
                 successView = {tasks ->
                     TasksList(
-                        task = tasks,
+                        tasks = tasks,
                         onTaskClick ={idTask ->
                             taskViewModel.setEvent(
                                 TasksContrant.Event.OnTaskClick(

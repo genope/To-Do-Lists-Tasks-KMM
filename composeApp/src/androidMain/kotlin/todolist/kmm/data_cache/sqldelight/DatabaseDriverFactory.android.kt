@@ -6,5 +6,5 @@ import android.content.Context
 
 actual class DatabaseDriverFactory(private val context: Context) {
     actual suspend fun createDriver(): SqlDriver {
-        return AndroidSqliteDriver(AppDatabase.Schema, context, "test.db")    }
+        return AndroidSqliteDriver(AppDatabase.Schema, context, "todoapp.db")    }
 }
