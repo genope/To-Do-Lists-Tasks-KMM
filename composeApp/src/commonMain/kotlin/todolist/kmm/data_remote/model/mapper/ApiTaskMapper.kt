@@ -10,7 +10,7 @@ import todolist.kmm.domain.models.map.Mapper
 class ApiTaskMapper : Mapper<Item, Task>() {
     override fun map(model: Item): Task = model.run {
         Task(
-            id.toLong(), name_task, description, assigned_from, assigned_to,
+            id.toLong(), name_task, description, assigned_from,assigned_to,
             when (status) {
                 0 -> Status.PENDING
                 1 -> Status.DONE
@@ -29,29 +29,27 @@ class ApiTaskMapper : Mapper<Item, Task>() {
         )
     }
 
-    override fun inverseMap(model: Task): Item {
-        TODO("Not yet implemented")
-    }
 
-    /*override fun inverseMap(model: Task): Item = model.run {
+    override fun inverseMap(model: Task): Item = model.run {
         Item(
-            name_task, description, assigned_from, assigned_to,
+            id.toInt(), name_task, description,
+            assigned_from, assigned_to,
+            when (status) {
+                Status.PENDING -> 0
+                Status.DONE -> 1
+                else -> {
+                    Status.UNKNOWN as Int
+                }
+            },
             when (complexity) {
                 Complexity.EASY -> 1
                 Complexity.MEDIUM -> 2
                 Complexity.HARD -> 3
                 else -> {
-                    Complexity.UNKNOWN
+                    Complexity.UNKNOWN as Int
                 }
-            },
-            when (status) {
-                Status.PENDING -> 0
-                Status.DONE -> 1
-                else -> {
-                    Status.UNKNOWN
-                }
-            },id
+            }
         )
-    }*/
+    }
 }
 

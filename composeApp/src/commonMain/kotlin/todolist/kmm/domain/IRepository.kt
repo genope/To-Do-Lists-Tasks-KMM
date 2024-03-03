@@ -10,4 +10,5 @@ interface IRepository {
     suspend fun addTaskToFavorites(task: Task)
     suspend fun removeTaskFromFavorite(idTask: Int)
     suspend fun isTaskFavorite(idTask: Int): Boolean
+    suspend fun addTask(task: Task): Boolean
 }

@@ -29,4 +29,7 @@ class RepositoryImp(
     override suspend fun isTaskFavorite(idTask: Int): Boolean =
         cacheData.isTaskFavorite(idTask)
 
+    override suspend fun addTask(task: Task): Boolean =
+        remoteData.addTask(task)
+
 }

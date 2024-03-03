@@ -15,17 +15,22 @@ import io.ktor.client.plugins.logging.Logging
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.json.Json
+import note.data.local.Task
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
+import todolist.kmm.domain.interactors.AddTaskUseCase
 import todolist.kmm.domain.interactors.GetTaskUseCase
 import todolist.kmm.domain.interactors.GetTasksFavoritesUseCase
 import todolist.kmm.domain.interactors.IsTaskFavoriteUseCase
 import todolist.kmm.domain.interactors.SwitchTaskFavoriteUseCase
-import todolist.kmm.presentation.ui.features.task_details.TaskDetailViewModel
-import todolist.kmm.presentation.ui.features.tasks.TasksViewModel
-import todolist.kmm.presentation.ui.features.tasks_favorites.TasksFavoritesViewModel
+import todolist.kmm.domain.models.Complexity
+import todolist.kmm.domain.models.Status
+import todolist.kmm.presentation.view.features.task_add.AddTaskViewModel
+import todolist.kmm.presentation.view.features.task_details.TaskDetailViewModel
+import todolist.kmm.presentation.view.features.tasks.TasksViewModel
+import todolist.kmm.presentation.view.features.tasks_favorites.TasksFavoritesViewModel
 import todolist.kmm.repository.ICacheData
 import todolist.kmm.repository.IRemoteData
 import todolist.kmm.repository.RepositoryImp
@@ -48,6 +53,7 @@ val viewModelModule = module {
     factory { TasksViewModel(get()) }
     factory { TasksFavoritesViewModel(get()) }
     factory { params -> TaskDetailViewModel(get(),get(),get(),params.get()) }
+    factory { AddTaskViewModel(get(),Task(0,"","","","",Status.UNKNOWN,Complexity.UNKNOWN)) }
 }
 val useCasesModule: Module = module {
     factory { GetTasksUseCase(get(), get()) }
@@ -55,6 +61,7 @@ val useCasesModule: Module = module {
     factory { GetTasksFavoritesUseCase(get(), get()) }
     factory { IsTaskFavoriteUseCase(get(), get()) }
     factory { SwitchTaskFavoriteUseCase(get(), get()) }
+    factory { AddTaskUseCase(get(), get()) }
 }
 
 val repositoryModule = module {
