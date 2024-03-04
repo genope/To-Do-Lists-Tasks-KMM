@@ -9,7 +9,6 @@ import todolist.kmm.presentation.model.ResourceUIState
 
 class AddTaskViewModel(
     private val addTaskUseCase: AddTaskUseCase,
-    private val task: Task
 ) : BaseViewModel<AddTaskContract.Event, AddTaskContract.State, AddTaskContract.Effect>() {
 
     override fun createInitialState(): AddTaskContract.State =

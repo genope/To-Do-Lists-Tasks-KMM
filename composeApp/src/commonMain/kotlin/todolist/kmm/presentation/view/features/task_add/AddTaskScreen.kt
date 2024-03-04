@@ -1,18 +1,28 @@
+@file:OptIn(ExperimentalMaterialApi::class)
+
 package todolist.kmm.presentation.view.features.task_add
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
@@ -21,19 +31,15 @@ import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.rememberScaffoldState
-import androidx.compose.material.TextField
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.MailOutline
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -60,11 +66,8 @@ import kotlinx.coroutines.flow.collectLatest
 import note.data.local.Task
 import todolist.kmm.domain.models.Complexity
 import todolist.kmm.domain.models.Status
-import todolist.kmm.presentation.model.ResourceUIState
-import todolist.kmm.presentation.view.common.ActionBarIcon
 import todolist.kmm.presentation.view.common.ArrowBackIcon
-import todolist.kmm.presentation.view.common.state.ManagementResourceUiState
-import todolist.kmm.presentation.view.features.task_details.TaskDetailsScreen
+
 
 class AddTaskScreen : Screen {
     override val key: ScreenKey = uniqueScreenKey
@@ -82,6 +85,7 @@ class AddTaskScreen : Screen {
                 when (effect) {
                     AddTaskContract.Effect.TaskAdded ->
                         scaffoldState.snackbarHostState.showSnackbar("Task added")
+
                     AddTaskContract.Effect.BackNavigation -> navigator.pop()
 
 
@@ -115,12 +119,14 @@ class AddTaskScreen : Screen {
             mutableStateOf("")
         }
         var status by remember {
-            mutableStateOf(0)
+            mutableStateOf(Status.UNKNOWN)
         }
         var complexity by remember {
             mutableStateOf(0)
         }
+        LazyColumn {
 
+        }
         Card(
             modifier = Modifier
                 .padding(18.dp)
@@ -132,6 +138,7 @@ class AddTaskScreen : Screen {
         ) {
             Column(
                 modifier = Modifier
+                    .verticalScroll(rememberScrollState())
                     .fillMaxHeight(0.9f)
                     .fillMaxWidth()
                     .background(Color.Transparent),
@@ -181,12 +188,15 @@ class AddTaskScreen : Screen {
                     Icons.Filled.Person,
                 ) { assigned_from = it }
                 Spacer(modifier = Modifier.padding(5.dp))
-                CustomTextInputComponent(
-                    status.toString(),
-                    textLabel = "Task Status",
-                    ImeAction.Next,
-                    Icons.Default.CheckCircle,
-                ) { status = it.toInt() }
+                DropDownMenu(
+                    selectedOption = status,
+                    onOptionSelected = {
+                    },
+                    options = listOf(
+                        Status.PENDING to false,
+                        Status.DONE to false, // Option 2 is disabled
+                    ),
+                )
                 Spacer(modifier = Modifier.padding(5.dp))
                 CustomTextInputComponent(
                     complexity.toString(),
@@ -195,9 +205,9 @@ class AddTaskScreen : Screen {
                     Icons.Filled.Menu,
                 ) { complexity = it.toInt() }
                 Spacer(modifier = Modifier.padding(7.dp))
-                ElevatedButton(onClick ={
+                ElevatedButton(onClick = {
                     val task = Task(
-                        id=0,
+                        id = 0,
                         name_task,
                         description,
                         assigned_to,
@@ -206,7 +216,7 @@ class AddTaskScreen : Screen {
                         Complexity.HARD
                     )
                     onActionAddTask(task)
-                } ) {
+                }) {
                     Text("Add Task")
                 }
             }
@@ -256,4 +266,47 @@ fun CustomTextInputComponent(
         },
         keyboardOptions = KeyboardOptions(imeAction = imeAction)
     )
+}
+
+
+
+@Composable
+fun DropDownMenu(
+    selectedOption: Status,
+    onOptionSelected: (Status) -> Unit,
+    options: List<Pair<Status, Boolean>>,
+    modifier: Modifier = Modifier
+) {
+    var expanded by remember { mutableStateOf(false) }
+
+    Column {
+        BasicTextField(
+            value = selectedOption.toString(),
+            onValueChange = {
+            },
+            modifier = modifier
+                .padding(16.dp)
+                .fillMaxWidth()
+                .clickable { expanded = true }
+        )
+
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            options.forEach { (option, disabled) ->
+                DropdownMenuItem(
+                    onClick = {
+                        if (!disabled) {
+                            onOptionSelected(option)
+                            expanded = false
+                        }
+                    },
+                    enabled = !disabled
+                ) {
+                    Text(option.toString())
+                }
+            }
+        }
+    }
 }

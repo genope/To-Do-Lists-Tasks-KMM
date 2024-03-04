@@ -53,7 +53,7 @@ val viewModelModule = module {
     factory { TasksViewModel(get()) }
     factory { TasksFavoritesViewModel(get()) }
     factory { params -> TaskDetailViewModel(get(),get(),get(),params.get()) }
-    factory { AddTaskViewModel(get(),Task(0,"","","","",Status.UNKNOWN,Complexity.UNKNOWN)) }
+    factory { AddTaskViewModel(get()) }
 }
 val useCasesModule: Module = module {
     factory { GetTasksUseCase(get(), get()) }
